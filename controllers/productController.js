@@ -5,10 +5,10 @@ export async function getProduct(req,res){
     try{
 
         if(isAdmin(req)){
-            const product = await Product.find()
+            const product = await Product.find()      //admint okkom products balann puluwan 
             res.json(product)
         }else{
-            const product = await Product.find({isAvalabale : true})
+            const product = await Product.find({isAvalabale : true})  //habi user kenkta avalabele products vitharai pennane
         res.json(product)
         }
         
@@ -68,4 +68,73 @@ export async function deleteProduct(req,res){
         })
     }
     
+}
+
+export async function updateProduct(req,res){
+    if(!isAdmin(req)){
+        res.status(403).json({
+            message : "You are not authorized to update a product"
+        })
+        return
+    }
+
+    const productId = req.params.productId
+    const updatingData = req.body
+
+    try{
+        await Product.updateOne(
+            {productId : productId},
+            updatingData
+        )
+        res.json({
+           message : "Product updated successfully",
+            
+        })
+
+    }catch(err){
+        res.status(500).json({
+           message : "Internal server error",
+            error : err 
+        })
+    }
+}
+
+
+export async function getProductById(req,res){
+    const productId = req.params.productId
+
+    try{
+
+        const product = await Product.findOne(
+            {productId : productId}
+        )
+
+        if(product == null){                        //methana waradai productId ekakda kiyala check karanwa
+            res.status(404).json({
+                message : "Product not found"
+            })
+            return
+        }
+        if(product.isAvalabale){                   //product eka isAvalable nam e product eka pennawa
+            res.json(product)
+        }else{
+            if(!isAdmin(req)){                     //product eka isAvalable novi aya admin kenekuth neminm error ekka pennawa 
+               res.status(404).json({
+                message : "Product not found"
+            })
+            return 
+            }else{                                 //product eka isAvalable novi aya admin kenek nam ayat product eka pennawa
+                res.json(product)
+            }
+        }
+
+    }catch(err){
+        res.status(500).json({
+           message : "Internal server error",
+            error : err 
+        })
+        return
+    }
+
+
 }

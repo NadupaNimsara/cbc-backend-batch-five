@@ -89,6 +89,7 @@ export function loginUser(req,res){
 
 }
 
+//admin kenkda kiyala check karan function eka 
 export function isAdmin(req){
      if (req.user == null){
         return false
