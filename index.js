@@ -5,6 +5,7 @@ import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRouter.js';
 import orderRouter from './routes/orderRouter.js';
 import jwt from "jsonwebtoken";
+import reviewRouter from './routes/reviewRouter.js';
 
 const app = express();
 
@@ -61,6 +62,8 @@ app.use("/products",productRouter)
 app.use("/users",userRouter)
 
 app.use("/orders",orderRouter)
+
+app.use("/reviews",reviewRouter)
 
 
 

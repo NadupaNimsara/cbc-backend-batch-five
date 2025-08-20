@@ -40,7 +40,7 @@ export async function createOrder(req,res){
         const products = []
 
         for(let i =0; i<orderinfo.products.length; i++){
-            const item  = await Product.findOne({productId : orderinfo.products[i].productId})
+            const item  = await Product.findOne({productId : orderinfo.products[i].productId})  //user ගේ order එකේ දාපු productId එකට සමාන product එක MongoDB එකේ තිබ්බොත් එය item variable එකට assign වෙනවා. 
 
             if(item == null){
                 res.status(404).json({
